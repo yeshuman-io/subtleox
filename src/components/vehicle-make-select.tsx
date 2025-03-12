@@ -28,7 +28,7 @@ export function VehicleMakeSelect({
       <SelectTrigger className="w-full">
         <SelectValue placeholder="Select a make" />
       </SelectTrigger>
-      <SelectContent className="z-50 w-full">
+      <SelectContent>
         {vehicleMakes.map((make) => (
           <SelectItem key={make.id} value={make.id}>
             {make.name}

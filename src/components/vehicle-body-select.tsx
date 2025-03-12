@@ -28,7 +28,7 @@ export function VehicleBodySelect({
       <SelectTrigger className="w-full">
         <SelectValue placeholder="Select body style" />
       </SelectTrigger>
-      <SelectContent className="z-50 w-full">
+      <SelectContent>
         {vehicleBodies.map((body) => (
           <SelectItem key={body.id} value={body.id}>
             {body.name}

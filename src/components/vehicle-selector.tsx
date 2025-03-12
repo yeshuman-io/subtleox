@@ -163,13 +163,13 @@ export function VehicleSelector({ initialVehicleMakes, makeCount }: VehicleSelec
   return (
     <div className="w-full max-w-md space-y-4">
       {/* Vehicle Make Selector */}
-      <div className="w-full">
-        <label htmlFor="vehicle-make" className="block text-sm font-medium mb-2">
+      <div className="space-y-2">
+        <label className="text-sm font-medium">
           Select Vehicle Make ({makeCount} available)
         </label>
         
         {initialVehicleMakes.length === 0 && (
-          <div className="bg-amber-100 text-amber-800 p-2 rounded mb-2 text-sm">
+          <div className="bg-amber-100 text-amber-800 p-2 rounded text-sm">
             No vehicle makes found.
           </div>
         )}
@@ -183,20 +183,20 @@ export function VehicleSelector({ initialVehicleMakes, makeCount }: VehicleSelec
       
       {/* Vehicle Model Selector - only show when a make is selected */}
       {selectedMake && (
-        <div className="w-full">
-          <label htmlFor="vehicle-model" className="block text-sm font-medium mb-2">
+        <div className="space-y-2">
+          <label className="text-sm font-medium">
             Select {selectedMakeName} Model
             {!isLoadingModels && ` (${modelCount} available)`}
           </label>
           
           {isLoadingModels && (
-            <div className="bg-blue-50 text-blue-700 p-2 rounded mb-2 text-sm">
+            <div className="p-2 rounded text-sm">
               Loading models...
             </div>
           )}
           
           {!isLoadingModels && vehicleModels.length === 0 && (
-            <div className="bg-amber-100 text-amber-800 p-2 rounded mb-2 text-sm">
+            <div className="p-2 rounded text-sm">
               No models found for {selectedMakeName}.
             </div>
           )}
@@ -211,20 +211,20 @@ export function VehicleSelector({ initialVehicleMakes, makeCount }: VehicleSelec
       
       {/* Vehicle Series Selector - only show when a model is selected */}
       {selectedModel && (
-        <div className="w-full">
-          <label htmlFor="vehicle-series" className="block text-sm font-medium mb-2">
+        <div className="space-y-2">
+          <label className="text-sm font-medium">
             Select {selectedModelName} Year Range
             {!isLoadingSeries && ` (${seriesCount} available)`}
           </label>
           
           {isLoadingSeries && (
-            <div className="bg-blue-50 text-blue-700 p-2 rounded mb-2 text-sm">
+            <div className="p-2 rounded text-sm">
               Loading year ranges...
             </div>
           )}
           
           {!isLoadingSeries && vehicleSeries.length === 0 && (
-            <div className="bg-amber-100 text-amber-800 p-2 rounded mb-2 text-sm">
+            <div className="p-2 rounded text-sm">
               No year ranges found for {selectedModelName}.
             </div>
           )}
@@ -239,14 +239,14 @@ export function VehicleSelector({ initialVehicleMakes, makeCount }: VehicleSelec
       
       {/* Vehicle Body Selector - only show when a model is selected AND bodies are available */}
       {selectedModel && (!isLoadingBodies && vehicleBodies.length > 0) && (
-        <div className="w-full">
-          <label htmlFor="vehicle-body" className="block text-sm font-medium mb-2">
+        <div className="space-y-2">
+          <label className="text-sm font-medium">
             Select {selectedModelName} Body Style
             {!isLoadingBodies && ` (${bodyCount} available)`}
           </label>
           
           {isLoadingBodies && (
-            <div className="bg-blue-50 text-blue-700 p-2 rounded mb-2 text-sm">
+            <div className="p-2 rounded text-sm">
               Loading body styles...
             </div>
           )}
