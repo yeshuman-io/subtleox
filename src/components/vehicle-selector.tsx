@@ -1,11 +1,14 @@
 "use client";
 
 import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { VehicleMake } from "@/lib/data/vehicle-makes";
 import { VehicleModel, listVehicleModels } from "@/lib/data/vehicle-models";
 import { VehicleSeries, listVehicleSeries } from "@/lib/data/vehicle-series";
 import { VehicleBody, listVehicleBodies } from "@/lib/data/vehicle-bodies";
+import { Vehicle, findVehicle } from "@/lib/data/vehicles";
 import { VehicleMakeSelect } from "./vehicle-make-select";
 import { VehicleModelSelect } from "./vehicle-model-select";
 import { VehicleSeriesSelect } from "./vehicle-series-select";
@@ -17,6 +20,8 @@ interface VehicleSelectorProps {
 }
 
 export function VehicleSelector({ initialVehicleMakes, makeCount }: VehicleSelectorProps) {
+  const router = useRouter();
+  
   const [selectedMake, setSelectedMake] = useState<string | null>(null);
   const [selectedModel, setSelectedModel] = useState<string | null>(null);
   const [selectedSeries, setSelectedSeries] = useState<string | null>(null);
@@ -34,6 +39,10 @@ export function VehicleSelector({ initialVehicleMakes, makeCount }: VehicleSelec
   const [bodyCount, setBodyCount] = useState<number>(0);
   const [isLoadingBodies, setIsLoadingBodies] = useState<boolean>(false);
   
+  // State for the matched vehicle
+  const [matchedVehicle, setMatchedVehicle] = useState<Vehicle | null>(null);
+  const [isLoadingVehicle, setIsLoadingVehicle] = useState<boolean>(false);
+  
   // Fetch models when a make is selected
   useEffect(() => {
     // Reset model, series, and body selection when make changes
@@ -43,6 +52,7 @@ export function VehicleSelector({ initialVehicleMakes, makeCount }: VehicleSelec
     setVehicleSeries([]);
     setSelectedBody(null);
     setVehicleBodies([]);
+    setMatchedVehicle(null);
     
     // Don't fetch models if no make is selected
     if (!selectedMake) return;
@@ -74,6 +84,7 @@ export function VehicleSelector({ initialVehicleMakes, makeCount }: VehicleSelec
     setVehicleSeries([]);
     setSelectedBody(null);
     setVehicleBodies([]);
+    setMatchedVehicle(null);
     
     // Don't fetch series or bodies if no model is selected
     if (!selectedModel) return;
@@ -117,6 +128,34 @@ export function VehicleSelector({ initialVehicleMakes, makeCount }: VehicleSelec
     fetchBodies();
   }, [selectedModel]);
   
+  // Fetch the matching vehicle when all required selections are made
+  useEffect(() => {
+    // Reset the matched vehicle
+    setMatchedVehicle(null);
+    
+    // Don't fetch if any required selection is missing
+    if (!selectedMake || !selectedModel || !selectedSeries) return;
+    
+    async function fetchVehicle() {
+      setIsLoadingVehicle(true);
+      try {
+        const vehicle = await findVehicle({
+          makeId: selectedMake as string,
+          modelId: selectedModel as string,
+          seriesId: selectedSeries as string,
+          bodyId: selectedBody
+        });
+        setMatchedVehicle(vehicle);
+      } catch (error) {
+        console.error("Failed to find matching vehicle:", error);
+      } finally {
+        setIsLoadingVehicle(false);
+      }
+    }
+    
+    fetchVehicle();
+  }, [selectedMake, selectedModel, selectedSeries, selectedBody]);
+  
   const handleMakeSelect = (makeId: string) => {
     setSelectedMake(makeId);
   };
@@ -144,6 +183,13 @@ export function VehicleSelector({ initialVehicleMakes, makeCount }: VehicleSelec
     return `${series.start_year}-${series.end_year}`;
   };
   
+  // Navigate to vehicle details page
+  const handleViewVehicleDetails = () => {
+    if (matchedVehicle) {
+      router.push(`/vehicle/${matchedVehicle.id}`);
+    }
+  };
+  
   // Find selected make, model, series, and body for display
   const selectedMakeName = selectedMake 
     ? initialVehicleMakes.find(make => make.id === selectedMake)?.name 
@@ -160,6 +206,15 @@ export function VehicleSelector({ initialVehicleMakes, makeCount }: VehicleSelec
   const selectedBodyName = selectedBody
     ? vehicleBodies.find(body => body.id === selectedBody)?.name
     : null;
+  
+  // Check if all required fields are selected
+  const allRequiredFieldsSelected = selectedMake && selectedModel && selectedSeries;
+  
+  // Check if a body is required (if any bodies exist for the model)
+  const bodyIsRequired = vehicleBodies.length > 0;
+  
+  // Check if all selections are complete
+  const selectionComplete = allRequiredFieldsSelected && (!bodyIsRequired || selectedBody);
   
   return (
     <div className="w-full max-w-md space-y-4">
@@ -277,6 +332,42 @@ export function VehicleSelector({ initialVehicleMakes, makeCount }: VehicleSelec
           )}
           {selectedBodyName && (
             <div><span className="font-medium">Body Style:</span> {selectedBodyName}</div>
+          )}
+        </div>
+      )}
+      
+      {/* Vehicle Details Button - only show when all fields are populated */}
+      {selectionComplete && (
+        <div className="mt-6">
+          {isLoadingVehicle ? (
+            <Button disabled className="w-full">
+              Finding vehicles...
+            </Button>
+          ) : matchedVehicle ? (
+            <Button 
+              onClick={handleViewVehicleDetails}
+              className="w-full"
+            >
+              View Vehicle Details
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M5 12h14" />
+                <path d="m12 5 7 7-7 7" />
+              </svg>
+            </Button>
+          ) : (
+            <Button disabled className="w-full">
+              No matching vehicles found
+            </Button>
           )}
         </div>
       )}
