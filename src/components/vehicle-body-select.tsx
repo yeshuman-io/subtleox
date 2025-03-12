@@ -1,6 +1,6 @@
 "use client";
 
-import { VehicleMake } from "@/lib/data/vehicle-makes";
+import { VehicleBody } from "@/lib/data/vehicle-bodies";
 import {
   Select,
   SelectContent,
@@ -9,29 +9,29 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-interface VehicleMakeSelectProps {
-  vehicleMakes: VehicleMake[];
+interface VehicleBodySelectProps {
+  vehicleBodies: VehicleBody[];
   disabled?: boolean;
-  onSelect?: (makeId: string) => void;
+  onSelect?: (bodyId: string) => void;
 }
 
-export function VehicleMakeSelect({ 
-  vehicleMakes, 
+export function VehicleBodySelect({ 
+  vehicleBodies, 
   disabled = false,
   onSelect
-}: VehicleMakeSelectProps) {
+}: VehicleBodySelectProps) {
   return (
     <Select 
       disabled={disabled} 
       onValueChange={onSelect}
     >
       <SelectTrigger className="w-full">
-        <SelectValue placeholder="Select a make" />
+        <SelectValue placeholder="Select body style" />
       </SelectTrigger>
       <SelectContent className="z-50 w-full">
-        {vehicleMakes.map((make) => (
-          <SelectItem key={make.id} value={make.id}>
-            {make.name}
+        {vehicleBodies.map((body) => (
+          <SelectItem key={body.id} value={body.id}>
+            {body.name}
           </SelectItem>
         ))}
       </SelectContent>

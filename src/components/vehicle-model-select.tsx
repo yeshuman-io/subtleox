@@ -28,7 +28,7 @@ export function VehicleModelSelect({
       <SelectTrigger className="w-full">
         <SelectValue placeholder="Select a model" />
       </SelectTrigger>
-      <SelectContent>
+      <SelectContent className="z-50 w-full">
         {vehicleModels.map((model) => (
           <SelectItem key={model.id} value={model.id}>
             {model.name}

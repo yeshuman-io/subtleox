@@ -40,7 +40,7 @@ export function VehicleSeriesSelect({
       <SelectTrigger className="w-full">
         <SelectValue placeholder="Select model years" />
       </SelectTrigger>
-      <SelectContent>
+      <SelectContent className="z-50 w-full">
         {vehicleSeries.map((series) => (
           <SelectItem key={series.id} value={series.id}>
             {formatYearRange(series)}
