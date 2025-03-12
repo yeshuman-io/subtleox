@@ -25,7 +25,7 @@ export function VehicleBodySelect({
       disabled={disabled} 
       onValueChange={onSelect}
     >
-      <SelectTrigger className="w-full">
+      <SelectTrigger id="vehicle-body" className="w-full">
         <SelectValue placeholder="Select body style" />
       </SelectTrigger>
       <SelectContent>

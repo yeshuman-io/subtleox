@@ -25,7 +25,7 @@ export function VehicleMakeSelect({
       disabled={disabled} 
       onValueChange={onSelect}
     >
-      <SelectTrigger className="w-full">
+      <SelectTrigger id="vehicle-make" className="w-full">
         <SelectValue placeholder="Select a make" />
       </SelectTrigger>
       <SelectContent>

@@ -1,5 +1,6 @@
 "use client";
 
+import { Label } from "@/components/ui/label";
 import { useState, useEffect } from "react";
 import { VehicleMake } from "@/lib/data/vehicle-makes";
 import { VehicleModel, listVehicleModels } from "@/lib/data/vehicle-models";
@@ -164,12 +165,12 @@ export function VehicleSelector({ initialVehicleMakes, makeCount }: VehicleSelec
     <div className="w-full max-w-md space-y-4">
       {/* Vehicle Make Selector */}
       <div className="space-y-2">
-        <label className="text-sm font-medium">
+        <Label htmlFor="vehicle-make" className="text-sm font-medium">
           Select Vehicle Make ({makeCount} available)
-        </label>
+        </Label>
         
         {initialVehicleMakes.length === 0 && (
-          <div className="bg-amber-100 text-amber-800 p-2 rounded text-sm">
+          <div className="p-2 rounded text-sm">
             No vehicle makes found.
           </div>
         )}
@@ -184,10 +185,10 @@ export function VehicleSelector({ initialVehicleMakes, makeCount }: VehicleSelec
       {/* Vehicle Model Selector - only show when a make is selected */}
       {selectedMake && (
         <div className="space-y-2">
-          <label className="text-sm font-medium">
+          <Label htmlFor="vehicle-model" className="text-sm font-medium">
             Select {selectedMakeName} Model
             {!isLoadingModels && ` (${modelCount} available)`}
-          </label>
+          </Label>
           
           {isLoadingModels && (
             <div className="p-2 rounded text-sm">
@@ -212,10 +213,10 @@ export function VehicleSelector({ initialVehicleMakes, makeCount }: VehicleSelec
       {/* Vehicle Series Selector - only show when a model is selected */}
       {selectedModel && (
         <div className="space-y-2">
-          <label className="text-sm font-medium">
+          <Label htmlFor="vehicle-series">
             Select {selectedModelName} Year Range
             {!isLoadingSeries && ` (${seriesCount} available)`}
-          </label>
+          </Label>
           
           {isLoadingSeries && (
             <div className="p-2 rounded text-sm">
@@ -240,10 +241,10 @@ export function VehicleSelector({ initialVehicleMakes, makeCount }: VehicleSelec
       {/* Vehicle Body Selector - only show when a model is selected AND bodies are available */}
       {selectedModel && (!isLoadingBodies && vehicleBodies.length > 0) && (
         <div className="space-y-2">
-          <label className="text-sm font-medium">
+          <Label htmlFor="vehicle-body">
             Select {selectedModelName} Body Style
             {!isLoadingBodies && ` (${bodyCount} available)`}
-          </label>
+          </Label>
           
           {isLoadingBodies && (
             <div className="p-2 rounded text-sm">

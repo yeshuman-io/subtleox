@@ -25,7 +25,7 @@ export function VehicleModelSelect({
       disabled={disabled} 
       onValueChange={onSelect}
     >
-      <SelectTrigger className="w-full">
+      <SelectTrigger id="vehicle-model" className="w-full">
         <SelectValue placeholder="Select a model" />
       </SelectTrigger>
       <SelectContent>

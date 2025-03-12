@@ -37,8 +37,8 @@ export function VehicleSeriesSelect({
       disabled={disabled} 
       onValueChange={onSelect}
     >
-      <SelectTrigger className="w-full">
-        <SelectValue placeholder="Select model years" />
+      <SelectTrigger id="vehicle-series" className="w-full">
+        <SelectValue placeholder="Select series years" />
       </SelectTrigger>
       <SelectContent>
         {vehicleSeries.map((series) => (
