@@ -1,10 +1,12 @@
 FROM node:current-alpine
+RUN npm install -g pnpm
 
 WORKDIR /app
 
-COPY package.json /app/package.json
-COPY pnpm-lock.yaml /app/pnpm-lock.yaml
+COPY package.json pnpm-lock.yaml ./
+RUN pnpm install --frozen-lockfile
 
-RUN npm install -g pnpm && pnpm install
+COPY . ./
 
-CMD bash
+EXPOSE 9010
+CMD ["pnpm", "next", "dev", "--turbopack", "-p", "9010"]
